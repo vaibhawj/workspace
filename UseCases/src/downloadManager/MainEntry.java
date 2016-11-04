@@ -1,77 +1,156 @@
 package downloadManager;
 
-import java.util.List;
-import java.util.Scanner;
+import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Vector;
 
-public class MainEntry {
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
-	private static DownloadManager dm = new DownloadManager();
+public class MainEntry extends JFrame {
 
-	public static void main(String[] args) throws InterruptedException {
+	private JPanel contentPane;
+	private JTextField urlTextField;
+	private JTable table;
+	private JFileChooser chooser;
+	private DefaultTableModel model;
+	private DownloadManager downloadManager;
+	private TableRefresher tableRefresher;
 
-		Scanner in = new Scanner(System.in);
+	private float[] columnWidthPer = { 30.0f, 60.0f, 10.0f };
 
-		System.out.println("Welcome to download manager");
-
-		while (true) {
-			String choice = showOptions(in);
-
-			System.out.println("Okay!");
-			switch (choice) {
-			case "1":
-				showProgress(in);
-				break;
-
-			case "2":
-				addFileForDownload(in);
-				break;
-
-			case "3":
-				System.out.println("Exiting...");
-				System.exit(0);
-				break;
-
-			default:
-				System.err.println("Wrong choice!");
-				break;
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					MainEntry frame = new MainEntry();
+					frame.init();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
+		});
+	}
+
+	public MainEntry() {
+		setResizable(false);
+		downloadManager = new DownloadManager();
+		tableRefresher = new TableRefresher();
+	}
+
+	/**
+	 * Create the frame.
+	 * 
+	 * @return
+	 */
+	private void init() {
+
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 462, 300);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+
+		JLabel lblUrl = new JLabel("URL");
+		lblUrl.setBounds(19, 22, 36, 16);
+		contentPane.add(lblUrl);
+
+		urlTextField = new JTextField();
+		urlTextField.setBounds(56, 17, 388, 26);
+		contentPane.add(urlTextField);
+		urlTextField.setColumns(10);
+
+		JButton btnDownload = new JButton("Download");
+		btnDownload.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				if (null == urlTextField.getText() || urlTextField.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Enter URL", "Error", JOptionPane.ERROR_MESSAGE);
+					urlTextField.requestFocus();
+					return;
+				}
+
+				chooser = new JFileChooser();
+				chooser.setDialogTitle("Select destination directory");
+				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				chooser.setAcceptAllFileFilterUsed(false);
+				if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+					String url = urlTextField.getText().trim();
+					String dest = chooser.getSelectedFile().getAbsolutePath();
+
+					Vector rowData = new Vector<>();
+					rowData.addElement(Utility.getFileNameFromURL(url));
+					rowData.addElement(dest);
+					rowData.addElement("0%");
+					downloadManager.startDownload(url, dest, rowData, tableRefresher);
+					model.addRow(rowData);
+				} else {
+					JOptionPane.showMessageDialog(null, "No Selection. Download won't start", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					btnDownload.requestFocus();
+					return;
+				}
+				urlTextField.setText("");
+			}
+		});
+		btnDownload.setBounds(327, 42, 117, 29);
+		contentPane.add(btnDownload);
+
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(19, 71, 426, 189);
+		contentPane.add(scrollPane);
+
+		model = new DefaultTableModel() {
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		model.addColumn("Filename");
+		model.addColumn("Location");
+		model.addColumn("Status");
+
+		table = new JTable(model);
+		table.getTableHeader().setReorderingAllowed(false);
+		scrollPane.setViewportView(table);
+		int tW = scrollPane.getWidth();
+		TableColumn column;
+		TableColumnModel jTableColumnModel = table.getColumnModel();
+		int cantCols = jTableColumnModel.getColumnCount();
+		for (int i = 0; i < cantCols; i++) {
+			column = jTableColumnModel.getColumn(i);
+			int pWidth = Math.round(columnWidthPer[i] * tW);
+			column.setPreferredWidth(pWidth);
 		}
 
 	}
 
-	private static void showProgress(Scanner in) {
+	class TableRefresher {
 
-		List progress = dm.getProgress();
-		if (progress.isEmpty()) {
-			System.out.println("Nothing to show");
-		} else {
-			progress.forEach(p -> System.out.println(p));
+		public void refreshTable() {
+			model.fireTableDataChanged();
 		}
-
-		System.out.println("Press any key when you are done");
-		in.nextLine();
-
-	}
-
-	private static String showOptions(Scanner in) {
-		System.out.println("Options-");
-		System.out.println("1. To see active downloads and status");
-		System.out.println("2. To add file for download");
-		System.out.println("3. Exit");
-		System.out.println("Enter Choice");
-		String choice = in.nextLine();
-		return choice;
-	}
-
-	public static void addFileForDownload(Scanner in) {
-
-		System.out.println("Enter url of source file");
-		String url = in.nextLine();
-		System.out.println("Enter destination directory");
-		String dest = in.nextLine();
-		dm.startDownload(url, dest);
-
-		System.out.println("Download started. You can see the progress!");
 
 	}
 
