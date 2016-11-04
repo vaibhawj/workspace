@@ -48,14 +48,15 @@ public class DownloadJob implements Runnable {
 					tableRefresher.refreshTable();
 				}
 				// TODO Remove sleep
-				Thread.sleep(1000);
+				// Thread.sleep(1000);
 			}
 			out.close();
 			in.close();
-			this.rowData.set(2, "100%");
+			this.rowData.set(2, "Done");
 			tableRefresher.refreshTable();
 
 		} catch (Exception e) {
+			this.rowData.set(2, "Err!");
 			e.printStackTrace();
 		}
 
