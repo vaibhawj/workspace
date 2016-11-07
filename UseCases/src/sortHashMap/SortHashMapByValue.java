@@ -1,4 +1,4 @@
-package codes;
+package sortHashMap;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -35,23 +35,19 @@ public class SortHashMapByValue {
 
 	}
 
-	private static HashMap<String, String> sortMapByValue(
-			HashMap<String, String> map) {
+	private static HashMap<String, String> sortMapByValue(HashMap<String, String> map) {
 		return sortMapByValue(map, Order.ASC);
 	}
 
-	private static HashMap<String, String> sortMapByValue(
-			HashMap<String, String> map, Order order) {
+	private static HashMap<String, String> sortMapByValue(HashMap<String, String> map, Order order) {
 
 		Set<Entry<String, String>> entrySet = map.entrySet();
-		LinkedList<Entry<String, String>> entryList = new LinkedList<Map.Entry<String, String>>(
-				entrySet);
+		LinkedList<Entry<String, String>> entryList = new LinkedList<Map.Entry<String, String>>(entrySet);
 
 		Collections.sort(entryList, new Comparator<Entry<String, String>>() {
 
 			@Override
-			public int compare(Entry<String, String> o1,
-					Entry<String, String> o2) {
+			public int compare(Entry<String, String> o1, Entry<String, String> o2) {
 
 				switch (order) {
 				case DESC:

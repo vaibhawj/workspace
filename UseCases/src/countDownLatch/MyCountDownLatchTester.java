@@ -1,4 +1,6 @@
-package codes;
+package countDownLatch;
+
+import countDownLatch.MyCountDownLatch;
 
 public class MyCountDownLatchTester {
 

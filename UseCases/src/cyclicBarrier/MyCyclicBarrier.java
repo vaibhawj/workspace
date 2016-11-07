@@ -1,4 +1,4 @@
-package codes;
+package cyclicBarrier;
 
 public class MyCyclicBarrier {
 

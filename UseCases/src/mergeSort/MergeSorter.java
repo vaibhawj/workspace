@@ -1,4 +1,4 @@
-package codes;
+package mergeSort;
 
 /**
  * Implement Merge Sort

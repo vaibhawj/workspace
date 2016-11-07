@@ -1,4 +1,4 @@
-package codes;
+package largestAndSecLargest;
 
 /**
  * Write program to find largest and second largest element in an unsorted array
