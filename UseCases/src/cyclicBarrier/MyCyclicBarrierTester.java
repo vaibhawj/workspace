@@ -1,6 +1,6 @@
 package cyclicBarrier;
 
-import cyclicBarrier.MyCyclicBarrier;
+import cyclicBarrier.MyCyclicBarrier.BarrierBrokenException;
 
 public class MyCyclicBarrierTester {
 
