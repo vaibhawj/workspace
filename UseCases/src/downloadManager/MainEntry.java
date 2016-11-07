@@ -61,7 +61,7 @@ public class MainEntry extends JFrame {
 	 * @return
 	 */
 	private void init() {
-
+		setTitle("Download Manager");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 462, 300);
 		contentPane = new JPanel();
@@ -84,8 +84,10 @@ public class MainEntry extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				if (null == urlTextField.getText() || urlTextField.getText().isEmpty()) {
-					JOptionPane.showMessageDialog(null, "Enter URL", "Error", JOptionPane.ERROR_MESSAGE);
+				if (null == urlTextField.getText()
+						|| urlTextField.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Enter URL", "Error",
+							JOptionPane.ERROR_MESSAGE);
 					urlTextField.requestFocus();
 					return;
 				}
@@ -102,10 +104,12 @@ public class MainEntry extends JFrame {
 					rowData.addElement(Utility.getFileNameFromURL(url));
 					rowData.addElement(dest);
 					rowData.addElement("0%");
-					downloadManager.startDownload(url, dest, rowData, tableRefresher);
+					downloadManager.startDownload(url, dest, rowData,
+							tableRefresher);
 					model.addRow(rowData);
 				} else {
-					JOptionPane.showMessageDialog(null, "No Selection. Download won't start", "Error",
+					JOptionPane.showMessageDialog(null,
+							"No Selection. Download won't start", "Error",
 							JOptionPane.ERROR_MESSAGE);
 					btnDownload.requestFocus();
 					return;
