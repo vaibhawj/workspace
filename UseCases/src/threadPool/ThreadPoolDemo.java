@@ -1,27 +1,18 @@
 package threadPool;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import threadPool.ThreadPool.Worker;
 
 public class ThreadPoolDemo {
 
-	static ThreadPool pool = new ThreadPool(2, 2, 1);
+	public static void main(String[] args) throws InterruptedException {
+		ThreadPool threadPool = new ThreadPool(2);
+		threadPool.submit(new MyJob("J1", 2));
+		threadPool.submit(new MyJob("J2", 1));
 
-	public static void main(String[] args) {
+		Thread.sleep(3000);
 
-		List<MyJob> jobs = new ArrayList<>();
-		jobs.add(new MyJob("J1", 2));
-		jobs.add(new MyJob("J2", 3));
-		jobs.add(new MyJob("J3", 1));
-		jobs.add(new MyJob("J4", 4));
-
-		for (MyJob job : jobs) {
-			Worker worker = pool.checkOut();
-			job.worker = worker;
-			worker.submit(job);
-		}
+		threadPool.submit(new MyJob("J3", 2));
+		threadPool.shutDown();
 
 	}
 
@@ -41,11 +32,9 @@ public class ThreadPoolDemo {
 			try {
 				Thread.sleep(i * 1000);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			System.out.println(Thread.currentThread() + " completed " + name);
-			pool.checkIn(worker);
 
 		}
 	};

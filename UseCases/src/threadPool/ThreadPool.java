@@ -1,58 +1,74 @@
 package threadPool;
 
-import objectPool.ObjectPool;
-import threadPool.ThreadPool.Worker;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
-public class ThreadPool extends ObjectPool<Worker> {
+public class ThreadPool {
+
+	private BlockingQueue<Runnable> jobs;
+	private List<Worker> workers;
 
 	public ThreadPool(int noOfThreads) {
-		super(noOfThreads);
+		jobs = new LinkedBlockingQueue<>();
+		workers = new LinkedList<>();
+		for (int i = 0; i < noOfThreads; i++) {
+			Worker worker = new Worker(jobs);
+			workers.add(worker);
+			Thread t = new Thread(worker);
+			t.start();
+		}
+
 	}
 
-	public ThreadPool(int minSize, int maxSize, int checkInterval) {
-		super(minSize, maxSize, checkInterval);
+	public ThreadPool() {
+		this(2);
 	}
 
-	@Override
-	protected Worker createObject() {
-		Worker worker = new Worker();
-		worker.start();
+	protected static class Worker implements Runnable {
 
-		return worker;
-	}
+		private BlockingQueue<Runnable> jobs;
+		private volatile boolean running;
 
-	protected static class Worker extends Thread {
+		public Worker(BlockingQueue<Runnable> jobs) {
+			this.jobs = jobs;
+			this.running = true;
+		}
 
-		private Runnable work;
+		public void terminate() {
+			this.running = false;
+		}
 
 		@Override
 		public void run() {
-			while (true) {
-				if (this.work != null) {
-					this.work.run();
-					this.work = null;
+			while (running) {
+
+				try {
+					Runnable job = this.jobs.take();
+					if (null != job) {
+						System.out.println(Thread.currentThread() + " dint find any job");
+						job.run();
+					}
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
 			}
 
+			System.out.println(Thread.currentThread().getName() + " exiting");
+
 		}
 
-		public void submit(Runnable myJob) {
-			this.work = myJob;
+	}
+
+	public void submit(Runnable job) {
+		this.jobs.offer(job);
+	}
+
+	public void shutDown() {
+		for (Worker worker : workers) {
+			worker.terminate();
 		}
-	}
-
-	@Override
-	public void checkIn(Worker object) {
-		object.work = null;
-		System.out.println(object + " returning to pool");
-		super.checkIn(object);
-	}
-
-	@Override
-	public Worker checkOut() {
-		Worker worker = super.checkOut();
-		System.out.println("Got " + worker + " from pool");
-		return worker;
 	}
 
 }
