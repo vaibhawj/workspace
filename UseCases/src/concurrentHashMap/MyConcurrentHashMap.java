@@ -1,53 +1,79 @@
 package concurrentHashMap;
 
 import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
 public class MyConcurrentHashMap<K, V> extends AbstractMap<K, V> {
 
-	LinkedList<LinkedList<Node<K, V>>> entryList;
+	private ArrayList<LinkedList<Node<K, V>>> entryList;
+	private int capacity;
 
 	public MyConcurrentHashMap() {
-		entryList = new LinkedList<>();
+		this(16);
+	}
+
+	public MyConcurrentHashMap(int capacity) {
+		this.capacity = capacity;
+		entryList = new ArrayList<>(16);
+		for (int i = 0; i < this.capacity; i++) {
+			entryList.add(new LinkedList<MyConcurrentHashMap.Node<K, V>>());
+		}
 	}
 
 	@Override
 	public V put(K key, V value) {
 		int index = getHashCode(key);
 		Node<K, V> node = new Node<K, V>(key, value);
-		LinkedList<Node<K, V>> list;
-		int size = entryList.size();
-		if (size <= index) {
-			list = new LinkedList<>();
-			entryList.add(index, list);
-		}
-		list = entryList.get(index);
-		if (list == null) {
-			list = new LinkedList<>();
-			list.add(node);
-		} else {
+		LinkedList<Node<K, V>> list = entryList.get(index);
+
+		// TODO to remove
+		System.out.println(Thread.currentThread().getName()
+				+ " reached just before synchronized block");
+		synchronized (list) {
+			// TODO to remove
+			System.out.println(Thread.currentThread().getName()
+					+ " just entered synchronized block");
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			//
+
+			// Actual code
 			if (list.contains(node)) {
 				list.remove(node);
 			}
 			list.add(node);
+			//
+
+			// TODO to remove
+			System.out.println(Thread.currentThread().getName()
+					+ " just added " + node);
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			//
 		}
 
 		return node.v;
 	}
 
 	private int getHashCode(K key) {
-		return key.hashCode();
+		return key.hashCode() % capacity;
 	}
 
 	@Override
 	public V get(Object key) {
 		int index = getHashCode((K) key);
 		LinkedList<Node<K, V>> list = entryList.get(index);
-		if (list == null) {
-			return null;
-		}
+
 		for (Node node : list) {
 			if (node.k.equals(((Node) key).k)) {
 				return (V) node.v;
@@ -90,12 +116,29 @@ public class MyConcurrentHashMap<K, V> extends AbstractMap<K, V> {
 			return this.k.equals(o.k);
 		}
 
+		@Override
+		public String toString() {
+
+			return "{" + this.k + ", " + this.v + "}";
+		}
+
 	}
 
 	@Override
 	public Set<java.util.Map.Entry<K, V>> entrySet() {
-		// TODO Auto-generated method stub
-		return null;
+		HashSet<Entry<K, V>> entrySet = new HashSet<MyConcurrentHashMap.Entry<K, V>>();
+		for (LinkedList<Node<K, V>> bucket : entryList) {
+			for (Node<K, V> node : bucket) {
+				entrySet.add(node);
+			}
+		}
+		return entrySet;
+	}
+
+	@Override
+	public String toString() {
+		Set<Entry<K, V>> entrySet = entrySet();
+		return entrySet.toString();
 	}
 
 }
