@@ -12,23 +12,25 @@ public class Customer {
 		Order order = this.createOrder();
 		boolean orderStatus = order.validate();
 		if (!orderStatus) {
-			for (Validation v : order.getValidationMessages()) {
-				v.print();
-			}
+			printNotification(order);
 			return orderStatus;
 		}
 
 		Payment payment = new Payment(this, order);
 		boolean paymentStatus = payment.doPayment();
 		if (!paymentStatus) {
-			for (Validation v : payment.getValidationMessages()) {
-				v.print();
-			}
+			printNotification(payment);
 			return paymentStatus;
 
 		}
 		return paymentStatus;
 
+	}
+
+	private void printNotification(Verifiable verifiableObject) {
+		for (Validation v : verifiableObject.getValidationMessages()) {
+			v.print();
+		}
 	}
 
 }
