@@ -1,41 +1,49 @@
 package concurrentHashMap;
 
 import java.util.AbstractMap;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
 public class MyConcurrentHashMap<K, V> extends AbstractMap<K, V> {
 
-	ArrayList<LinkedList<Node<K, V>>> entryList;
+	LinkedList<LinkedList<Node<K, V>>> entryList;
 
 	public MyConcurrentHashMap() {
-		entryList = new ArrayList<>();
+		entryList = new LinkedList<>();
 	}
 
 	@Override
 	public V put(K key, V value) {
-		int index = key.hashCode();
+		int index = getHashCode(key);
 		Node<K, V> node = new Node<K, V>(key, value);
-		LinkedList<Node<K, V>> list = entryList.get(index);
+		LinkedList<Node<K, V>> list;
+		int size = entryList.size();
+		if (size <= index) {
+			list = new LinkedList<>();
+			entryList.add(index, list);
+		}
+		list = entryList.get(index);
 		if (list == null) {
 			list = new LinkedList<>();
-
 			list.add(node);
 		} else {
 			if (list.contains(node)) {
 				list.remove(node);
-				list.add(node);
 			}
+			list.add(node);
 		}
 
 		return node.v;
 	}
 
+	private int getHashCode(K key) {
+		return key.hashCode();
+	}
+
 	@Override
 	public V get(Object key) {
-		int index = key.hashCode();
+		int index = getHashCode((K) key);
 		LinkedList<Node<K, V>> list = entryList.get(index);
 		if (list == null) {
 			return null;
