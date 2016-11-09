@@ -1,6 +1,8 @@
 package concurrentHashMap;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import concurrentHashMap.MyConcurrentHashMap.Node;
 
@@ -15,15 +17,14 @@ public class ConcurrentHashMapDemo {
 		Node<String, String> n3 = new Node<String, String>("fgh", "678");
 
 		CountDownLatch latch = new CountDownLatch(3);
-		Thread t1 = new Thread(new MyJob(map, n1, latch));
-		Thread t2 = new Thread(new MyJob(map, n2, latch));
-		Thread t3 = new Thread(new MyJob(map, n3, latch));
+		ExecutorService ex = Executors.newFixedThreadPool(3);
 
-		t1.start();
-		t2.start();
-		t3.start();
+		ex.submit(new MyJob(map, n1, latch));
+		ex.submit(new MyJob(map, n2, latch));
+		ex.submit(new MyJob(map, n3, latch));
 
 		latch.await();
+		ex.shutdown();
 
 		System.out.println(map);
 
