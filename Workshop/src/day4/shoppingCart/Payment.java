@@ -2,7 +2,7 @@ package day4.shoppingCart;
 
 import java.util.List;
 
-public class Payment implements Verifiable {
+public class Payment implements IVerifiable {
 
 	public Payment(Customer customer, Order order) {
 		// TODO Auto-generated constructor stub

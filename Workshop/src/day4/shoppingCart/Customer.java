@@ -27,7 +27,7 @@ public class Customer {
 
 	}
 
-	private void printNotification(Verifiable verifiableObject) {
+	private void printNotification(IVerifiable verifiableObject) {
 		for (Validation v : verifiableObject.getValidationMessages()) {
 			v.print();
 		}

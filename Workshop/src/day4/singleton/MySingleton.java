@@ -6,7 +6,9 @@ public class MySingleton implements Cloneable, Serializable {
 
 	private static MySingleton instance;
 
+	// Prone to reflection attack
 	private MySingleton() {
+
 		if (null != instance) {
 			throw new IllegalStateException();
 		}
