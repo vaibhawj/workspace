@@ -1,26 +1,20 @@
-package concurrentHashMap;
+package linkedHashMap;
 
 import java.util.AbstractMap;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
-public class MyConcurrentHashMap<K, V> extends AbstractMap<K, V> {
+public class MyLinkedHashMap<K, V> extends AbstractMap<K, V> {
 
-	private ArrayList<LinkedList<Node<K, V>>> entryList;
+	private LinkedList<LinkedList<Node<K, V>>> entryList;
 	private int capacity;
 
-	public MyConcurrentHashMap() {
-		this(16);
-	}
-
-	public MyConcurrentHashMap(int capacity) {
-		this.capacity = capacity;
-		entryList = new ArrayList<>(16);
+	public MyLinkedHashMap() {
+		entryList = new LinkedList<>();
 		for (int i = 0; i < this.capacity; i++) {
-			entryList.add(new LinkedList<MyConcurrentHashMap.Node<K, V>>());
+			entryList.add(new LinkedList<MyLinkedHashMap.Node<K, V>>());
 		}
 	}
 
@@ -126,7 +120,7 @@ public class MyConcurrentHashMap<K, V> extends AbstractMap<K, V> {
 
 	@Override
 	public Set<java.util.Map.Entry<K, V>> entrySet() {
-		HashSet<Entry<K, V>> entrySet = new HashSet<MyConcurrentHashMap.Entry<K, V>>();
+		HashSet<Entry<K, V>> entrySet = new HashSet<MyLinkedHashMap.Entry<K, V>>();
 		for (LinkedList<Node<K, V>> bucket : entryList) {
 			for (Node<K, V> node : bucket) {
 				entrySet.add(node);

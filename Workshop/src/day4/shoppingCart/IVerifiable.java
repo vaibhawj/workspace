@@ -2,7 +2,7 @@ package day4.shoppingCart;
 
 import java.util.List;
 
-public interface Verifiable {
+public interface IVerifiable {
 
 	public boolean validate();
 
