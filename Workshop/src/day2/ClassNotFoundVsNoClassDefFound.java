@@ -2,30 +2,19 @@ package day2;
 
 public class ClassNotFoundVsNoClassDefFound {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ClassNotFoundException,
+			InstantiationException, IllegalAccessException {
 
-		// NoClassDefFoundError
+		Class clss = null;
 		try {
-			StaticClass.getConnection();
-		} catch (Throwable e) {
-			e.printStackTrace();
+			clss = Class.forName("day2.StaticClass");
+		} catch (Error e) {
+
 		}
 
-		try {
-			StaticClass.getConnection();
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
+		Object o = clss.newInstance();
 
-		//
-
-		// ClassNotFoundException
-
-		try {
-			Class.forName("day2.StaticClasss");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+		System.out.println(o);
 
 	}
 }
