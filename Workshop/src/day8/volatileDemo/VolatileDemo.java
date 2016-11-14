@@ -29,7 +29,7 @@ public class VolatileDemo {
 
 	static class MyRunnable implements Runnable {
 
-		volatile private boolean stop;
+		private boolean stop;
 
 		@Override
 		public void run() {
