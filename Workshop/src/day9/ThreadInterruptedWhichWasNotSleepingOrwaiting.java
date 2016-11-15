@@ -1,6 +1,6 @@
 package day9;
 
-public class InterThreadCommunicationDemo {
+public class ThreadInterruptedWhichWasNotSleepingOrwaiting {
 
 	public static void main(String[] args) {
 
@@ -9,5 +9,4 @@ public class InterThreadCommunicationDemo {
 		o.notify();
 
 	}
-
 }
