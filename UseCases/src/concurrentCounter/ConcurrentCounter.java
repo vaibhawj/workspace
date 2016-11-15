@@ -24,4 +24,12 @@ public class ConcurrentCounter {
 		return --this.value;
 	}
 
+	public synchronized boolean compareAndSet(int expectValue, int updateValue) {
+		if (this.value == expectValue) {
+			this.value = updateValue;
+			return true;
+		}
+		return false;
+	}
+
 }

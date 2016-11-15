@@ -1,12 +1,12 @@
-package blockingQueue;
+package blockingQueue.custom.demo;
 
-import blockingQueue.custom.MyLinkedBlockingQueue;
+import java.util.concurrent.ArrayBlockingQueue;
 
 public class Consumer implements Runnable {
 
-	private MyLinkedBlockingQueue<Task> blockingQueue;
+	private ArrayBlockingQueue<Task> blockingQueue;
 
-	public Consumer(MyLinkedBlockingQueue<Task> blockingQueue) {
+	public Consumer(ArrayBlockingQueue<Task> blockingQueue) {
 		this.blockingQueue = blockingQueue;
 	}
 
@@ -26,8 +26,7 @@ public class Consumer implements Runnable {
 	}
 
 	private void consume(Task task) {
-		System.err.println(Thread.currentThread().getName()
-				+ " consuming task-" + task.getId() + " produced by "
+		System.err.println(Thread.currentThread().getName() + " consuming task-" + task.getId() + " produced by "
 				+ task.getProducer());
 	}
 }

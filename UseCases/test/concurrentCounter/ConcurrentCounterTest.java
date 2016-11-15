@@ -19,4 +19,16 @@ public class ConcurrentCounterTest {
 		Assert.assertEquals(1, counter.decrementAndGet());
 	}
 
+	@Test
+	public void testCompareAndSetPositive() {
+		ConcurrentCounter counter = new ConcurrentCounter(0);
+		Assert.assertTrue(counter.compareAndSet(0, 2));
+	}
+
+	@Test
+	public void testCompareAndSetNegative() {
+		ConcurrentCounter counter = new ConcurrentCounter(0);
+		Assert.assertFalse(counter.compareAndSet(1, 2));
+	}
+
 }
