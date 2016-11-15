@@ -10,8 +10,8 @@ public class Main {
 		Thread t3 = new Thread(new Runnable3(obj), "T3");
 
 		t1.start();
-		t3.start();
 		t2.start();
+		t3.start();
 
 	}
 }

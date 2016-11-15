@@ -12,6 +12,7 @@ public class Runnable1 implements Runnable {
 	public void run() {
 
 		synchronized (Test.class) {
+
 			Test.m1();
 			obj.m2();
 			Test.m3();
