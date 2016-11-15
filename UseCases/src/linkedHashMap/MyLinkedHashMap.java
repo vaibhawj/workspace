@@ -13,9 +13,7 @@ public class MyLinkedHashMap<K, V> extends AbstractMap<K, V> {
 
 	public MyLinkedHashMap() {
 		entryList = new LinkedList<>();
-		for (int i = 0; i < this.capacity; i++) {
-			entryList.add(new LinkedList<MyLinkedHashMap.Node<K, V>>());
-		}
+
 	}
 
 	@Override

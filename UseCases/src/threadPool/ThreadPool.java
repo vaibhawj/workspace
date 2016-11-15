@@ -8,15 +8,15 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class ThreadPool {
 
 	private BlockingQueue<Runnable> jobs;
-	private List<Worker> workers;
+	private List<Thread> workers;
 
 	public ThreadPool(int noOfThreads) {
 		jobs = new LinkedBlockingQueue<>();
 		workers = new LinkedList<>();
 		for (int i = 0; i < noOfThreads; i++) {
 			Worker worker = new Worker(jobs);
-			workers.add(worker);
 			Thread t = new Thread(worker);
+			workers.add(t);
 			t.start();
 		}
 
@@ -29,33 +29,28 @@ public class ThreadPool {
 	protected static class Worker implements Runnable {
 
 		private BlockingQueue<Runnable> jobs;
-		private volatile boolean running;
 
 		public Worker(BlockingQueue<Runnable> jobs) {
 			this.jobs = jobs;
-			this.running = true;
-		}
-
-		public void terminate() {
-			this.running = false;
 		}
 
 		@Override
 		public void run() {
-			while (running) {
+			while (true) {
 
 				try {
 					Runnable job = this.jobs.take();
 					if (null != job) {
-						System.out.println(Thread.currentThread() + " dint find any job");
+						System.out.println(Thread.currentThread()
+								+ " dint find any job");
 						job.run();
 					}
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					System.out.println(Thread.currentThread().getName()
+							+ " exiting");
+					break;
 				}
 			}
-
-			System.out.println(Thread.currentThread().getName() + " exiting");
 
 		}
 
@@ -66,9 +61,8 @@ public class ThreadPool {
 	}
 
 	public void shutDown() {
-		for (Worker worker : workers) {
-			worker.terminate();
+		for (Thread workerThread : workers) {
+			workerThread.interrupt();
 		}
 	}
-
 }
