@@ -36,7 +36,7 @@ public class ThreadPool {
 
 		@Override
 		public void run() {
-			while (!shutDownInvoked) {
+			while (!shutDownInvoked && !jobs.isEmpty()) {
 
 				try {
 					Runnable job = this.jobs.take();
