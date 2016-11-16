@@ -1,10 +1,8 @@
 package countDownLatch;
 
-import countDownLatch.MyCountDownLatch;
-
 public class MyCountDownLatchTester {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		MyCountDownLatch latch = new MyCountDownLatch(3);
 
 		Thread t1 = new Thread(new MyRunnable(latch), "T1");
@@ -15,7 +13,22 @@ public class MyCountDownLatchTester {
 		t2.start();
 		t3.start();
 
+		Thread waitingThread = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					latch.await();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				System.out.println("Wating thread also notified");
+
+			}
+		});
+		waitingThread.start();
 		latch.await();
+
 		System.out.println("All threads done! Count=" + latch.getCount());
 
 	}
@@ -30,14 +43,16 @@ public class MyCountDownLatchTester {
 
 		@Override
 		public void run() {
-			System.out.println(Thread.currentThread().getName() + " just started");
+			System.out.println(Thread.currentThread().getName()
+					+ " just started");
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 
-			System.out.println(Thread.currentThread().getName() + " is done. Releasing latch.");
+			System.out.println(Thread.currentThread().getName()
+					+ " is done. Releasing latch.");
 			this.latch.countDown();
 
 		}

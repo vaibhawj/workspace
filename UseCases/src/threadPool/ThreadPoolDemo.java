@@ -1,18 +1,22 @@
 package threadPool;
 
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
 import threadPool.ThreadPool.Worker;
 
 public class ThreadPoolDemo {
 
 	public static void main(String[] args) throws InterruptedException {
-		ThreadPool threadPool = new ThreadPool(2);
+		BlockingQueue<Runnable> jobs = new LinkedBlockingQueue<Runnable>();
+		ThreadPool threadPool = new ThreadPool(2, jobs);
 		threadPool.submit(new MyJob("J1", 2));
 		threadPool.submit(new MyJob("J2", 1));
 
 		Thread.sleep(3000);
 
 		threadPool.submit(new MyJob("J3", 2));
-		threadPool.shutDown();
+		threadPool.shutDownNow();
 
 	}
 

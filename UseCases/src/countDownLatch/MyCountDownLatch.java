@@ -1,5 +1,6 @@
 package countDownLatch;
 
+// TODO get rid of busy wait
 public class MyCountDownLatch {
 
 	private volatile int count;
@@ -8,14 +9,22 @@ public class MyCountDownLatch {
 		this.count = count;
 	}
 
-	public void await() {
+	public void await() throws InterruptedException {
 		while (this.count > 0) {
-
+			synchronized (this) {
+				this.wait();
+			}
 		}
 	}
 
 	public void countDown() {
-		count--;
+		synchronized (this) {
+			count--;
+			if (this.count == 0) {
+				this.notifyAll();
+			}
+		}
+
 	}
 
 	public int getCount() {

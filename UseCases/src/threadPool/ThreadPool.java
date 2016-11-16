@@ -3,15 +3,15 @@ package threadPool;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 public class ThreadPool {
 
 	private BlockingQueue<Runnable> jobs;
 	private List<Thread> workers;
+	private volatile boolean shutDownInvoked;
 
-	public ThreadPool(int noOfThreads) {
-		jobs = new LinkedBlockingQueue<>();
+	public ThreadPool(int noOfThreads, BlockingQueue<Runnable> jobs) {
+		this.jobs = jobs;
 		workers = new LinkedList<>();
 		for (int i = 0; i < noOfThreads; i++) {
 			Worker worker = new Worker(jobs);
@@ -22,11 +22,11 @@ public class ThreadPool {
 
 	}
 
-	public ThreadPool() {
-		this(2);
+	public ThreadPool(BlockingQueue<Runnable> jobs) {
+		this(2, jobs);
 	}
 
-	protected static class Worker implements Runnable {
+	protected class Worker implements Runnable {
 
 		private BlockingQueue<Runnable> jobs;
 
@@ -36,7 +36,7 @@ public class ThreadPool {
 
 		@Override
 		public void run() {
-			while (true) {
+			while (!shutDownInvoked) {
 
 				try {
 					Runnable job = this.jobs.take();
@@ -56,13 +56,22 @@ public class ThreadPool {
 
 	}
 
-	public void submit(Runnable job) {
-		this.jobs.offer(job);
+	public void submit(Runnable job) throws InterruptedException {
+		if (shutDownInvoked) {
+			throw new IllegalStateException(
+					"ShutDown Invoked. Will not take new tasks");
+		}
+
+		this.jobs.put(job);
 	}
 
-	public void shutDown() {
+	public void shutDownNow() {
 		for (Thread workerThread : workers) {
 			workerThread.interrupt();
 		}
+	}
+
+	public void shutDown() {
+		shutDownInvoked = true;
 	}
 }

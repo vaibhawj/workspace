@@ -2,6 +2,7 @@ package blockingQueue.custom;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+// TODO To complete using condition
 public class MyLinkedBlockingQueue<E> implements IBlockingQueue<E> {
 
 	private Node<E> head;
