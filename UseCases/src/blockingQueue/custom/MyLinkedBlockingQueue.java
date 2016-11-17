@@ -2,7 +2,6 @@ package blockingQueue.custom;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 // TODO To complete using condition
@@ -12,7 +11,7 @@ public class MyLinkedBlockingQueue<E> implements IBlockingQueue<E> {
 	private Node<E> last;
 	private int capacity;
 	private volatile AtomicInteger size;
-	private Lock lock;
+	private ReentrantLock lock;
 	private Condition notFullCondition;
 	private Condition notEmptyCondition;
 
@@ -50,6 +49,7 @@ public class MyLinkedBlockingQueue<E> implements IBlockingQueue<E> {
 
 	private void enqueue(Node<E> node) {
 
+		lock.lock();
 		if (this.size.get() == 0) {
 			head = node;
 			last = node;
@@ -60,13 +60,17 @@ public class MyLinkedBlockingQueue<E> implements IBlockingQueue<E> {
 			last = node;
 			this.size.incrementAndGet();
 		}
+		notEmptyCondition.signalAll();
+		lock.unlock();
 	}
 
 	@Override
 	public E take() throws InterruptedException {
 		if (this.size.get() == 0) {
 			while (this.size.get() == 0) {
-				// busy wait
+				lock.lock();
+				notEmptyCondition.await();
+				lock.unlock();
 			}
 			return take();
 		} else {
@@ -76,6 +80,7 @@ public class MyLinkedBlockingQueue<E> implements IBlockingQueue<E> {
 	}
 
 	private Node<E> dequeue() {
+		lock.lock();
 		if (null == head) {
 			return null;
 		}
@@ -87,6 +92,8 @@ public class MyLinkedBlockingQueue<E> implements IBlockingQueue<E> {
 			head.next = nextToHead.next;
 		}
 		this.size.decrementAndGet();
+		notFullCondition.signalAll();
+		lock.unlock();
 		return currentHead;
 	}
 
@@ -94,7 +101,9 @@ public class MyLinkedBlockingQueue<E> implements IBlockingQueue<E> {
 	public void put(E e) throws InterruptedException {
 		if (this.size.get() == capacity) {
 			while (this.size.get() == capacity) {
-				// busy wait
+				lock.lock();
+				notFullCondition.await();
+				lock.unlock();
 			}
 			put(e);
 		} else {

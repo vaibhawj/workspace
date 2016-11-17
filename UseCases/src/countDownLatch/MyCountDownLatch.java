@@ -1,6 +1,5 @@
 package countDownLatch;
 
-// TODO get rid of busy wait
 public class MyCountDownLatch {
 
 	private volatile int count;

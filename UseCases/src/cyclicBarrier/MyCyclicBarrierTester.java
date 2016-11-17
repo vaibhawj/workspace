@@ -5,7 +5,8 @@ import cyclicBarrier.MyCyclicBarrier.BarrierBrokenException;
 public class MyCyclicBarrierTester {
 
 	public static void main(String[] args) {
-		MyCyclicBarrier cb = new MyCyclicBarrier(3, new BarrierAction());
+		// MyCyclicBarrier cb = new MyCyclicBarrier(3, new BarrierAction());
+		MyCyclicBarrier cb = new MyCyclicBarrier(3);
 
 		Thread t1 = new Thread(new MyRunnable(cb), "T1");
 		Thread t2 = new Thread(new MyRunnable(cb), "T2");
@@ -21,7 +22,8 @@ public class MyCyclicBarrierTester {
 
 		@Override
 		public void run() {
-			System.out.println("Barrier Action executed by " + Thread.currentThread().getName());
+			System.out.println("Barrier Action executed by "
+					+ Thread.currentThread().getName());
 		}
 
 	}
@@ -36,13 +38,15 @@ public class MyCyclicBarrierTester {
 
 		@Override
 		public void run() {
-			System.out.println(Thread.currentThread().getName() + " just started");
+			System.out.println(Thread.currentThread().getName()
+					+ " just started");
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			System.out.println(Thread.currentThread().getName() + " reaching barrier");
+			System.out.println(Thread.currentThread().getName()
+					+ " reaching barrier");
 
 			try {
 				this.cb.await();
@@ -50,7 +54,8 @@ public class MyCyclicBarrierTester {
 				e.printStackTrace();
 			}
 
-			System.out.println(Thread.currentThread().getName() + " moving ahead");
+			System.out.println(Thread.currentThread().getName()
+					+ " moving ahead");
 
 		}
 

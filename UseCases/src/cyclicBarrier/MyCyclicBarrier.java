@@ -1,5 +1,8 @@
 package cyclicBarrier;
 
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
+
 public class MyCyclicBarrier {
 
 	private int parties;
@@ -12,25 +15,45 @@ public class MyCyclicBarrier {
 
 	private volatile boolean barrierCommandExecuted;
 
+	private ReentrantLock lock;
+
+	private Condition condition;
+
 	public MyCyclicBarrier(int parties) {
 		this.parties = parties;
 		this.count = parties;
+		lock = new ReentrantLock(true);
+		condition = lock.newCondition();
 	}
 
 	public MyCyclicBarrier(int parties, Runnable barrierAction) {
-		this.parties = parties;
-		this.count = parties;
+		this(parties);
 		this.barrierCommand = barrierAction;
 	}
 
 	public void await() throws BarrierBrokenException {
 		this.count--;
 
-		while (this.count > 0) {
-			if (this.barrierBroken) {
-				this.barrierBroken = false;
-				throw new BarrierBrokenException();
+		if (this.count == 0) {
+			lock.lock();
+			condition.signalAll();
+			lock.unlock();
+		}
+
+		if (this.count > 0) {
+			while (this.count > 0) {
+				if (this.barrierBroken) {
+					this.barrierBroken = false;
+					throw new BarrierBrokenException();
+				}
 			}
+			lock.lock();
+			try {
+				condition.await();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			lock.unlock();
 		}
 
 		if (!barrierCommandExecuted) {
