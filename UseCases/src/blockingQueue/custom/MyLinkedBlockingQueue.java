@@ -4,7 +4,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-// TODO To complete using condition
 public class MyLinkedBlockingQueue<E> implements IBlockingQueue<E> {
 
 	private Node<E> head;
