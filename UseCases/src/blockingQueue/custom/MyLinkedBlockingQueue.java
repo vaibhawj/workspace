@@ -1,6 +1,9 @@
 package blockingQueue.custom;
 
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 // TODO To complete using condition
 public class MyLinkedBlockingQueue<E> implements IBlockingQueue<E> {
@@ -9,10 +12,16 @@ public class MyLinkedBlockingQueue<E> implements IBlockingQueue<E> {
 	private Node<E> last;
 	private int capacity;
 	private volatile AtomicInteger size;
+	private Lock lock;
+	private Condition notFullCondition;
+	private Condition notEmptyCondition;
 
 	public MyLinkedBlockingQueue(int capacity) {
 		this.capacity = capacity;
 		this.size = new AtomicInteger();
+		lock = new ReentrantLock();
+		notFullCondition = lock.newCondition();
+		notEmptyCondition = lock.newCondition();
 	}
 
 	private static class Node<E> {
