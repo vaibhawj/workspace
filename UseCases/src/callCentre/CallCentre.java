@@ -12,7 +12,7 @@ public class CallCentre {
 
 		Fresher fresher = employeePool.findAFreeFresher();
 		boolean callHandled = false;
-		if (null != fresher && fresher.isFree()) {
+		if (null != fresher) {
 			callHandled = call.handle(fresher);
 		}
 
