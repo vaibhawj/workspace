@@ -2,19 +2,21 @@ package callCentre;
 
 public class TechnicalLead implements IEmployee {
 
+	private boolean freeFlag;
+
 	@Override
-	public boolean takeCall(Call call) {
-		synchronized (this) {
-			// handle call
-			this.notifyAll();
-		}
-		return false;
+	public synchronized boolean takeCall(Call call) {
+		freeFlag = false;
+		System.out.println("Tech lead taking call");
+		freeFlag = true;
+		this.notifyAll();
+
+		return true;
 	}
 
 	@Override
 	public boolean isFree() {
-		// TODO Auto-generated method stub
-		return false;
+		return freeFlag;
 	}
 
 }
