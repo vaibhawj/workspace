@@ -1,7 +1,5 @@
 package cyclicBarrier;
 
-import cyclicBarrier.MyCyclicBarrier.BarrierBrokenException;
-
 public class MyCyclicBarrierTester {
 
 	public static void main(String[] args) {
@@ -48,11 +46,7 @@ public class MyCyclicBarrierTester {
 			System.out.println(Thread.currentThread().getName()
 					+ " reaching barrier");
 
-			try {
-				this.cb.await();
-			} catch (BarrierBrokenException e) {
-				e.printStackTrace();
-			}
+			this.cb.await();
 
 			System.out.println(Thread.currentThread().getName()
 					+ " moving ahead");

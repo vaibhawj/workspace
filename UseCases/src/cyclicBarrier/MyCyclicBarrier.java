@@ -9,12 +9,6 @@ public class MyCyclicBarrier {
 
 	private volatile int count;
 
-	private volatile boolean barrierBroken;
-
-	private Runnable barrierCommand;
-
-	private volatile boolean barrierCommandExecuted;
-
 	private ReentrantLock lock;
 
 	private Condition condition;
@@ -26,12 +20,7 @@ public class MyCyclicBarrier {
 		condition = lock.newCondition();
 	}
 
-	public MyCyclicBarrier(int parties, Runnable barrierAction) {
-		this(parties);
-		this.barrierCommand = barrierAction;
-	}
-
-	public void await() throws BarrierBrokenException {
+	public void await() {
 		this.count--;
 
 		if (this.count == 0) {
@@ -41,43 +30,25 @@ public class MyCyclicBarrier {
 		}
 
 		if (this.count > 0) {
-			while (this.count > 0) {
-				if (this.barrierBroken) {
-					this.barrierBroken = false;
-					throw new BarrierBrokenException();
-				}
-			}
 			lock.lock();
-			try {
-				condition.await();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			while (this.count > 0) {
+				try {
+					condition.await();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 			lock.unlock();
 		}
 
-		if (!barrierCommandExecuted) {
-			barrierCommandExecuted = true;
-			barrierCommand.run();
-		}
 	}
 
 	public void reset() {
 		count = parties;
-		this.barrierBroken = true;
 	}
 
 	public int getNumberWaiting() {
-		return this.parties - this.count;
-	}
-
-	static class BarrierBrokenException extends Exception {
-
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1340198090568923005L;
-
+		return this.count;
 	}
 
 }
