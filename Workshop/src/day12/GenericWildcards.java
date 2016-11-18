@@ -1,20 +1,28 @@
 package day12;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GenericWildcards {
 
 	public static void main(String[] args) {
-		ArrayList<? super Child> list1 = new ArrayList<>();
-		ArrayList<? extends GrandParent> list2 = new ArrayList<>();
+		ArrayList<? super Parent> list1 = new ArrayList<>();
 
 		list1.add(new Child());
 		list1.add(new Parent());
-		list1.add(new GrandParent());
+		// list1.add(new GrandParent()); does not add
 
-		list2.add(new Child());
-		list2.add(new Parent());
-		list2.add(new GrandParent());
+		ArrayList<Parent> list2 = new ArrayList<>();
+		ArrayList<Child> list3 = new ArrayList<>();
+
+		// extends will take whole list of certain type satisfying is a relation
+		// with Type
+		fun(list2);
+		fun(list3);
+
+	}
+
+	public static void fun(List<? extends Parent> list) {
 
 	}
 
