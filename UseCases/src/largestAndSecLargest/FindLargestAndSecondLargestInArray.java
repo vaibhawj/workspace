@@ -8,12 +8,30 @@ package largestAndSecLargest;
  */
 public class FindLargestAndSecondLargestInArray {
 
-	public static void main(String[] args) {
+	public class Result {
 
-		int[] unsortedArr = { 4, 6, 1, 5, 3, 2 };
+		private int largest;
 
+		private int secondLargest;
+
+		public Result(int largest, int secondLargest) {
+			this.largest = largest;
+			this.secondLargest = secondLargest;
+		}
+
+		public int getLargest() {
+			return largest;
+		}
+
+		public int getSecondLargest() {
+			return secondLargest;
+		}
+
+	}
+
+	public Result findLargestAndSecondLargest(int[] arr) {
 		int largest = Integer.MIN_VALUE, secLargest = Integer.MIN_VALUE;
-		for (int num : unsortedArr) {
+		for (int num : arr) {
 			if (num > largest) {
 				secLargest = largest;
 				largest = num;
@@ -24,7 +42,8 @@ public class FindLargestAndSecondLargestInArray {
 			}
 		}
 
-		System.out.println(largest);
-		System.out.println(secLargest);
+		return new Result(largest, secLargest);
+
 	}
+
 }
