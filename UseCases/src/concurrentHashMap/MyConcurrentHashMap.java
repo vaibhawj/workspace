@@ -30,36 +30,13 @@ public class MyConcurrentHashMap<K, V> extends AbstractMap<K, V> {
 		Node<K, V> node = new Node<K, V>(key, value);
 		LinkedList<Node<K, V>> list = entryList.get(index);
 
-		// TODO to remove
-		System.out.println(Thread.currentThread().getName()
-				+ " reached just before synchronized block");
 		synchronized (list) {
-			// TODO to remove
-			System.out.println(Thread.currentThread().getName()
-					+ " just entered synchronized block");
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			//
 
-			// Actual code
 			if (list.contains(node)) {
 				list.remove(node);
 			}
 			list.add(node);
-			//
 
-			// TODO to remove
-			System.out.println(Thread.currentThread().getName()
-					+ " just added " + node);
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			//
 		}
 
 		return node.v;
