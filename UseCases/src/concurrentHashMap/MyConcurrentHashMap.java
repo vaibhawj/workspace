@@ -18,7 +18,7 @@ public class MyConcurrentHashMap<K, V> extends AbstractMap<K, V> {
 
 	public MyConcurrentHashMap(int capacity) {
 		this.capacity = capacity;
-		entryList = new ArrayList<>(16);
+		entryList = new ArrayList<>(this.capacity);
 		for (int i = 0; i < this.capacity; i++) {
 			entryList.add(new LinkedList<MyConcurrentHashMap.Node<K, V>>());
 		}
