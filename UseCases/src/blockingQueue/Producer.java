@@ -1,12 +1,12 @@
 package blockingQueue;
 
-import blockingQueue.custom.MyLinkedBlockingQueue;
+import java.util.concurrent.ArrayBlockingQueue;
 
 public class Producer implements Runnable {
 
-	private MyLinkedBlockingQueue<Task> blockingQueue;
+	private ArrayBlockingQueue<Task> blockingQueue;
 
-	public Producer(MyLinkedBlockingQueue<Task> blockingQueue) {
+	public Producer(ArrayBlockingQueue<Task> blockingQueue) {
 		this.blockingQueue = blockingQueue;
 	}
 
@@ -16,7 +16,6 @@ public class Producer implements Runnable {
 		for (int i = 0; i < 30; i++) {
 			Task task = new Task(i + 1, Thread.currentThread().getName());
 			try {
-				Thread.sleep(1000);
 				System.out.println(Thread.currentThread().getName()
 						+ " to produce task=" + task.getId());
 				blockingQueue.put(task);

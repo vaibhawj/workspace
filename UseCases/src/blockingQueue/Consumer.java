@@ -1,12 +1,12 @@
 package blockingQueue;
 
-import blockingQueue.custom.MyLinkedBlockingQueue;
+import java.util.concurrent.ArrayBlockingQueue;
 
 public class Consumer implements Runnable {
 
-	private MyLinkedBlockingQueue<Task> blockingQueue;
+	private ArrayBlockingQueue<Task> blockingQueue;
 
-	public Consumer(MyLinkedBlockingQueue<Task> blockingQueue) {
+	public Consumer(ArrayBlockingQueue<Task> blockingQueue) {
 		this.blockingQueue = blockingQueue;
 	}
 
@@ -14,10 +14,11 @@ public class Consumer implements Runnable {
 	public void run() {
 
 		while (true) {
+
 			try {
-				Thread.sleep(3000);
 				consume(blockingQueue.take());
 			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 

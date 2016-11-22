@@ -64,7 +64,7 @@ public class MyConcurrentHashMap<K, V> extends AbstractMap<K, V> {
 	static class Node<K, V> implements Map.Entry<K, V> {
 
 		private K k;
-		private V v;
+		private volatile V v;
 
 		public Node(K key, V value) {
 			this.k = key;
