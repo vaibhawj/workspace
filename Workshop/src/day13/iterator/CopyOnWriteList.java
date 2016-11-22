@@ -1,12 +1,14 @@
-package day13;
+package day13.iterator;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class CopyOnWriteList {
 
 	public static void main(String[] args) {
-		CopyOnWriteArrayList<String> list = new CopyOnWriteArrayList<>();
+		List<String> list = new CopyOnWriteArrayList<>();
+		// List<String> list = new Vector<>();
 		Thread reader = new Thread(new Reader(list), "Reader");
 		Thread writer = new Thread(new Writer(list), "Writer");
 
@@ -17,9 +19,9 @@ public class CopyOnWriteList {
 
 	static class Reader implements Runnable {
 
-		private CopyOnWriteArrayList<String> list;
+		private List<String> list;
 
-		public Reader(CopyOnWriteArrayList<String> list) {
+		public Reader(List<String> list) {
 			this.list = list;
 		}
 
@@ -51,9 +53,9 @@ public class CopyOnWriteList {
 
 	static class Writer implements Runnable {
 
-		private CopyOnWriteArrayList<String> list;
+		private List<String> list;
 
-		public Writer(CopyOnWriteArrayList<String> list) {
+		public Writer(List<String> list) {
 			this.list = list;
 		}
 
