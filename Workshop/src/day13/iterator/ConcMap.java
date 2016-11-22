@@ -9,10 +9,12 @@ public class ConcMap {
 
 		ConcurrentHashMap<String, String> map = new ConcurrentHashMap<>();
 		Thread reader = new Thread(new Reader(map), "Reader");
-		Thread writer = new Thread(new Writer(map), "Writer");
+		Thread writer1 = new Thread(new Writer(map), "Writer1");
+		Thread writer2 = new Thread(new Writer(map), "Writer2");
 
 		reader.start();
-		writer.start();
+		writer1.start();
+		writer2.start();
 
 	}
 
@@ -62,7 +64,7 @@ public class ConcMap {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				map.put("k" + i, i + "");
+				map.put(Thread.currentThread().getName() + " k" + i, i + "");
 			}
 
 		}
