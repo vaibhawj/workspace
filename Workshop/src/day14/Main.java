@@ -9,12 +9,20 @@ public class Main {
 			@Override
 			public void run() {
 				int i = 0;
-				while (!Thread.currentThread().isInterrupted()) {
+				System.out.println(Thread.currentThread().isInterrupted());
+				while (true) {
+
+					try {
+						Thread.sleep(2000);
+					} catch (InterruptedException e) {
+
+						break;
+					}
 
 					System.out.println("hey" + i++);
 
 				}
-				System.out.println("Done");
+				System.out.println(Thread.currentThread().isInterrupted());
 
 			}
 		});
