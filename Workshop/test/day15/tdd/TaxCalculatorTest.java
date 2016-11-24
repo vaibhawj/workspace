@@ -71,7 +71,8 @@ public class TaxCalculatorTest {
 	public void testCalculateTaxForSalaryBetween10001And50000AndAgeMoreThan50() {
 		long monthlySalary = 15000;
 		int age = 53;
-		double effectiveMonthlySalary = monthlySalary - ((monthlySalary * 10) / 100);
+		double effectiveMonthlySalary = monthlySalary
+				- ((monthlySalary * 10) / 100);
 		double expectedTax = (effectiveMonthlySalary * 10) / 100;
 		double tax = calculator.calculateTax(monthlySalary, age);
 
@@ -82,7 +83,8 @@ public class TaxCalculatorTest {
 	public void testCalculateTaxForSalaryBetween10001And50000AndAgeEqualTo50() {
 		long monthlySalary = 15000;
 		int age = 50;
-		double effectiveMonthlySalary = monthlySalary - ((monthlySalary * 10) / 100);
+		double effectiveMonthlySalary = monthlySalary
+				- ((monthlySalary * 10) / 100);
 		double expectedTax = (effectiveMonthlySalary * 10) / 100;
 		double tax = calculator.calculateTax(monthlySalary, age);
 
@@ -104,7 +106,8 @@ public class TaxCalculatorTest {
 	public void testCalculateTaxForSalaryBetween50001And100000AndAgeMoreThan50() {
 		long monthlySalary = 50_001;
 		int age = 53;
-		double effectiveMonthlySalary = monthlySalary - ((monthlySalary * 10) / 100d);
+		double effectiveMonthlySalary = monthlySalary
+				- ((monthlySalary * 10) / 100d);
 		double expectedTax = (effectiveMonthlySalary * 10) / 100;
 		double tax = calculator.calculateTax(monthlySalary, age);
 
@@ -115,7 +118,8 @@ public class TaxCalculatorTest {
 	public void testCalculateTaxForSalaryGreaterThanOneLakhAndAgeMoreThan50() {
 		long monthlySalary = 1_00001;
 		int age = 53;
-		double effectiveMonthlySalary = monthlySalary - ((monthlySalary * 10) / 100d);
+		double effectiveMonthlySalary = monthlySalary
+				- ((monthlySalary * 10) / 100d);
 		double expectedTax = (effectiveMonthlySalary * 15) / 100;
 		double tax = calculator.calculateTax(monthlySalary, age);
 
@@ -126,7 +130,8 @@ public class TaxCalculatorTest {
 	public void testCalculateTaxForSalaryGreaterThanTwoLakhAndAgeMoreThan50() {
 		long monthlySalary = 2_00001;
 		int age = 53;
-		double effectiveMonthlySalary = monthlySalary - ((monthlySalary * 10) / 100d);
+		double effectiveMonthlySalary = monthlySalary
+				- ((monthlySalary * 10) / 100d);
 		double expectedTax = (effectiveMonthlySalary * 20) / 100;
 		double tax = calculator.calculateTax(monthlySalary, age);
 
@@ -137,7 +142,8 @@ public class TaxCalculatorTest {
 	public void testCalculateTaxForSalaryGreaterThanTwoLakhAndAgeEqual50() {
 		long monthlySalary = 2_00001;
 		int age = 50;
-		double effectiveMonthlySalary = monthlySalary - ((monthlySalary * 10) / 100d);
+		double effectiveMonthlySalary = monthlySalary
+				- ((monthlySalary * 10) / 100d);
 		double expectedTax = (effectiveMonthlySalary * 20) / 100;
 		double tax = calculator.calculateTax(monthlySalary, age);
 
