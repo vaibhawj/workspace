@@ -10,7 +10,7 @@ public class MyThread extends Thread implements Callable<Long> {
 		MyThread t = new MyThread();
 
 		ExecutorService e = Executors.newSingleThreadExecutor();
-		e.submit(t);
+		// e.submit(t);
 	}
 
 	@Override
