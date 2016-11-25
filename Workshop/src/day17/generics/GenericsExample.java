@@ -9,29 +9,30 @@ public class GenericsExample<T> {
 
 	public static void main(String[] args) {
 
-		List<Parent> list = null;
-		List<GrandParent> list2 = null;
-		List<Child> list3 = null;
-		superFun(list);
-		superFun(list2);
+		List<Parent> listOfParent = null;
+		List<GrandParent> listOfGrandParent = null;
+		List<Child> listOfChild = null;
+
+		superFun(listOfParent);
+		superFun(listOfGrandParent);
 		// superFun(list3);
 
-		extendsFun(list);
+		extendsFun(listOfParent);
 		// extendsFun(list2);
-		extendsFun(list3);
+		extendsFun(listOfChild);
 	}
 
 	public static void superFun(List<? super Parent> list) {
 		list.add(new Parent());
 		list.add(new Child());
-
+		// list.add(new GrandParent());
 	}
 
 	public static void extendsFun(List<? extends Parent> list) {
-		/*
-		 * list.add(new Parent()); list.add(new Child()); list.add(new
-		 * GrandParent());
-		 */
+
+		// list.add(new Parent());
+		// list.add(new Child());
+		// list.add(new GrandParent());
 
 	}
 
