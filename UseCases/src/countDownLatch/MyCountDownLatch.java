@@ -1,5 +1,7 @@
 package countDownLatch;
 
+import java.util.concurrent.TimeoutException;
+
 public class MyCountDownLatch {
 
 	private volatile int count;
@@ -9,16 +11,32 @@ public class MyCountDownLatch {
 	}
 
 	public void await() throws InterruptedException {
-		while (this.count > 0) {
-			synchronized (this) {
+		synchronized (this) {
+			while (this.count > 0) {
+
 				this.wait();
 			}
 		}
 	}
 
-	public void countDown() {
+	public void await(long timeout) throws InterruptedException,
+			TimeoutException {
 		synchronized (this) {
-			count--;
+			while (this.count > 0) {
+
+				this.wait(timeout);
+				if (this.count > 0) {
+					throw new TimeoutException("Time out occured");
+				}
+
+			}
+		}
+	}
+
+	public void countDown() {
+
+		count--;
+		synchronized (this) {
 			if (this.count == 0) {
 				this.notifyAll();
 			}
