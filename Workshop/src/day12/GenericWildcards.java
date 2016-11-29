@@ -2,7 +2,7 @@ package day12;
 
 import java.util.List;
 
-public class GenericWildcards {
+public class GenericWildcards<T> {
 
 	public static void main(String[] args) {
 		List<Child> listOfChild = null;
