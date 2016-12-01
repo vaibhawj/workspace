@@ -5,31 +5,22 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
-@Entity(name = "ACCOUNT")
+@Entity
+@Table(name = "ACCOUNT", uniqueConstraints = { @UniqueConstraint(columnNames = "ACC_ID") })
 public class Account {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "acc_seq")
+	@SequenceGenerator(name = "acc_seq", sequenceName = "acc_seq")
 	@Column(name = "ACC_ID")
 	private long accountId;
 
 	@Column(name = "BALANCE")
 	private double balance;
-
-	@ManyToOne
-	@JoinColumn(name = "CUST_ID")
-	private Customer customer;
-
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
-	}
-
-	public Customer getCustomer() {
-		return this.customer;
-	}
 
 	public long getAccountId() {
 		return accountId;
