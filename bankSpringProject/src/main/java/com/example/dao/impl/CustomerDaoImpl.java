@@ -2,10 +2,12 @@ package com.example.dao.impl;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 
 import com.example.dao.CustomerDao;
 import com.example.entity.Customer;
 
+@Repository
 public class CustomerDaoImpl extends AbstractDaoImpl implements CustomerDao {
 
 	public CustomerDaoImpl() {
