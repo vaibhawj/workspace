@@ -78,6 +78,8 @@ public class LamdaExp {
 
 		boolean equals(Object obj);
 
+		public int hashCode();
+
 	}
 
 }
