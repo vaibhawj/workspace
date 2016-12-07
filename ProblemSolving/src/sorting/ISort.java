@@ -8,5 +8,6 @@ public interface ISort<T> {
 		for (T n : arr) {
 			System.out.print(n + " ");
 		}
+		System.out.println();
 	}
 }
