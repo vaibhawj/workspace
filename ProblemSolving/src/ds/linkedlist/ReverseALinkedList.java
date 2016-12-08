@@ -1,6 +1,6 @@
-package ds;
+package ds.linkedlist;
 
-public class ReverseALinkedList extends AbstractMyLinkedList {
+public class ReverseALinkedList {
 
 	public static void main(String[] args) {
 		Node head = new Node(1);
@@ -8,11 +8,11 @@ public class ReverseALinkedList extends AbstractMyLinkedList {
 		head.next.next = new Node(3);
 		head.next.next.next = new Node(4);
 
-		print(head);
+		Node.print(head);
 
 		Node newHead = reverse(head, null);
 
-		print(newHead);
+		Node.print(newHead);
 
 	}
 

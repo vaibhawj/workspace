@@ -1,6 +1,6 @@
-package ds;
+package ds.linkedlist;
 
-public class MergeTwoSortedLinkedList extends AbstractMyLinkedList {
+public class MergeTwoSortedLinkedList {
 
 	public static void main(String[] args) {
 		Node h1 = new Node(5);
@@ -12,10 +12,10 @@ public class MergeTwoSortedLinkedList extends AbstractMyLinkedList {
 		h2.next.next = new Node(12);
 		h2.next.next.next = new Node(20);
 
-		print(h1);
-		print(h2);
+		Node.print(h1);
+		Node.print(h2);
 		System.out.println("Merged");
-		print(merge(h1, h2, null, null));
+		Node.print(merge(h1, h2, null, null));
 
 	}
 
