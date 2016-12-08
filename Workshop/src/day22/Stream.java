@@ -24,16 +24,17 @@ public class Stream {
 		list.add(new Transaction(2, "Grocery", 96.5));
 		list.add(new Transaction(5, "Food", 156.5));
 		list.add(new Transaction(1, "Grocery", 56.5));
+		System.out.println(list);
 
 		ArrayList<Transaction> resList = list.parallelStream().filter(p)
-				.sorted(c).collect(Collectors.toCollection(ArrayList::new));
+				.sorted(c).map((t) -> {
+					t.value = t.value + 10.0d;
+					return t;
 
-		System.out.println(list);
+				}).collect(Collectors.toCollection(ArrayList::new));
+
 		System.out.println(resList);
 
-		list.parallelStream().forEach((t) -> {
-			System.out.println(t);
-		});
 	}
 
 	static class Transaction {
