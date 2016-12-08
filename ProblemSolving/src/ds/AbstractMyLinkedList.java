@@ -7,6 +7,9 @@ public abstract class AbstractMyLinkedList {
 
 		Node next;
 
+		public Node() {
+		}
+
 		public Node(int v) {
 			this.value = v;
 		}

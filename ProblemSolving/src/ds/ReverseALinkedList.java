@@ -10,23 +10,22 @@ public class ReverseALinkedList extends AbstractMyLinkedList {
 
 		print(head);
 
-		Node newHead = reverse(head);
+		Node newHead = reverse(head, null);
 
 		print(newHead);
 
 	}
 
-	private static Node reverse(Node node) {
-		Node prev = null;
-		Node current = node;
-		Node next = null;
-		while (current != null) {
-			next = current.next;
-			current.next = prev;
-			prev = current;
-			current = next;
+	private static Node reverse(Node node, Node prevNode) {
+
+		if (null == node.next) {
+			node.next = prevNode;
+			return node;
 		}
-		return prev;
+		Node nextNode = node.next;
+		node.next = prevNode;
+		prevNode = node;
+		return reverse(nextNode, node);
 
 	}
 
