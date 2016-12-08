@@ -24,7 +24,7 @@ public class ReverseALinkedList {
 		}
 		Node nextNode = node.next;
 		node.next = prevNode;
-		prevNode = node;
+
 		return reverse(nextNode, node);
 
 	}
