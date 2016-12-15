@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+"http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean id ="pointA" class="com.vibe.draw.Point" singleton="false">
+	<property name="x" value="20"/>
+	<property name="y" value="0"/>
+	</bean>
+	
+	<bean id ="pointB" class="com.vibe.draw.Point">
+	<property name="x" value="0"/>
+	<property name="y" value="20"/>
+	</bean>
+	
+	<bean id ="pointC" class="com.vibe.draw.Point">
+	<property name="x" value="0"/>
+	<property name="y" value="-20"/>
+	</bean>
+
+	<bean id="triangle" class="com.vibe.draw.Triangle" autowire="byName" >
+		<!-- <property name="type" value="Equilateral"/> -->
+		<!-- <constructor-arg index="0" value="Equilateral" type="java.lang.String"/>-->
+		<!--<constructor-arg index="1" value="10" type="int"/> -->
+		
+		
+	</bean>
+	
+</beans>
