@@ -1,6 +1,6 @@
 package com.vibe.draw;
 
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class DrawingApp {
@@ -9,16 +9,11 @@ public class DrawingApp {
 		// Triangle triangle = new Triangle();
 		// BeanFactory beanFactory = new XmlBeanFactory(new FileSystemResource(
 		// "spring.xml"));
-		ApplicationContext appContext = new ClassPathXmlApplicationContext(
-				"spring.xml");
+		AbstractApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
+		context.registerShutdownHook();
 
-		Triangle triangle = (Triangle) appContext.getBean("triangle");
-		triangle.draw();
-
-		Point p1 = (Point) appContext.getBean("pointA");
-		Point p2 = (Point) appContext.getBean("pointA");
-
-		System.out.println(p1 == p2);
+		Shape shape = (Shape) context.getBean("circle");
+		shape.draw();
 
 	}
 }

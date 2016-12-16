@@ -50,7 +50,7 @@ public class ForkJoinDemo {
 				int mid = (start + end) / 2;
 				MyTask task1 = new MyTask(arr, start, mid);
 				MyTask task2 = new MyTask(arr, mid + 1, end);
-				List<MyTask> list = new ArrayList<ForkJoinDemo.MyTask>();
+				List<MyTask> list = new ArrayList<>();
 				list.add(task1);
 				list.add(task2);
 				invokeAll(list);
