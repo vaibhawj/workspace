@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
-"http://www.springframework.org/dtd/spring-beans.dtd">
-<beans default-init-method="init" default-destroy-method="destroy">
-	<bean id ="pointA" class="com.vibe.draw.Point" >
-	<property name="x" value="${point1.x}"/>
-	<property name="y" value="${point1.y}"/>
+
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+	xmlns:context="http://www.springframework.org/schema/context">
+
+	<bean id ="pointA" class="com.vibe.draw.Point">
+	<property name="x" value="20"/>
+	<property name="y" value="0"/>
 	</bean>
 	
 	<bean id ="pointB" class="com.vibe.draw.Point">
@@ -29,7 +34,8 @@
     </bean>
 	
 	<bean id="circle" class="com.vibe.draw.Circle">
-    <property name="center" ref="pointA"/>
+    	<property name="center" ref="pointA"/>
+    	<property name="msgSource" ref="msgSource"/>
 	</bean>
 	
     <!-- <bean class="com.vibe.draw.DisplayNamesBeanPostProcessor"/> -->
@@ -44,5 +50,9 @@
         </property>
     </bean>
 		
+	<bean id="msgSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames" value="mymsg"/>
+	</bean>
 	
+	<context:component-scan base-package="com.vibe.draw"/>
 </beans>

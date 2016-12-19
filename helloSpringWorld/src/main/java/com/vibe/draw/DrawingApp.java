@@ -1,6 +1,6 @@
 package com.vibe.draw;
 
-import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class DrawingApp {
@@ -9,10 +9,13 @@ public class DrawingApp {
 		// Triangle triangle = new Triangle();
 		// BeanFactory beanFactory = new XmlBeanFactory(new FileSystemResource(
 		// "spring.xml"));
-		AbstractApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
-		context.registerShutdownHook();
+		ApplicationContext context = new ClassPathXmlApplicationContext(
+				"spring.xml");
 
 		Shape shape = (Shape) context.getBean("circle");
+		shape.draw();
+
+		shape = (Shape) context.getBean("triangle");
 		shape.draw();
 
 	}

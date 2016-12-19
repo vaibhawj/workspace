@@ -1,11 +1,14 @@
 package com.vibe.draw;
 
+import org.springframework.context.MessageSource;
+
 public class Triangle implements Shape {
 
 	private Point pointA;
 	private Point pointB;
 	private Point pointC;
 	private Color color;
+	private MessageSource msgSource;
 
 	public Color getColor() {
 		return color;
@@ -42,11 +45,8 @@ public class Triangle implements Shape {
 	@Override
 	public void draw() {
 
-		System.out.println("Triangle drawn with points - ");
-		System.out.println("Point A " + pointA);
-		System.out.println("Point B " + pointB);
-		System.out.println("Point C " + pointC);
-		System.out.println("Color is " + color.getColorName());
+		System.out.println(msgSource.getMessage("triangle.drawn", new Object[] {
+				pointA, pointB, pointC, this.color.getColorName() }, null));
 
 	}
 
@@ -58,5 +58,13 @@ public class Triangle implements Shape {
 	public void init() throws Exception {
 		System.out.println("Triangle bean initialized");
 
+	}
+
+	public MessageSource getMsgSource() {
+		return msgSource;
+	}
+
+	public void setMsgSource(MessageSource msgSource) {
+		this.msgSource = msgSource;
 	}
 }
