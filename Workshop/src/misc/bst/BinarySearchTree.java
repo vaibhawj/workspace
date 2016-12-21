@@ -111,8 +111,44 @@ public class BinarySearchTree {
 		if (node == null)
 			return 0;
 
-		return Math.max(heightOfTree(node.left) + 1, heightOfTree(node.right) + 1);
+		return Math.max(heightOfTree(node.left) + 1,
+				heightOfTree(node.right) + 1);
 
 	}
 
+	public boolean checkBinarySearchTree(Node node) {
+
+		if (node == null) {
+			return true;
+		}
+
+		if (maxOfSubTree(node.left) < node.value
+				&& minOfSubTree(node.right) > node.value) {
+			return checkBinarySearchTree(node.left)
+					&& checkBinarySearchTree(node.right);
+		}
+		return false;
+	}
+
+	private int minOfSubTree(Node node) {
+		if (node == null) {
+			return Integer.MAX_VALUE;
+		}
+
+		return Math.min(Math.min(Math.min(Math.min(node.value,
+				(node.left == null ? Integer.MAX_VALUE : node.left.value)),
+				(node.right == null ? Integer.MAX_VALUE : node.right.value)),
+				minOfSubTree(node.left)), minOfSubTree(node.right));
+	}
+
+	private int maxOfSubTree(Node node) {
+		if (node == null) {
+			return Integer.MIN_VALUE;
+		}
+
+		return Math.max(Math.max(Math.max(Math.max(node.value,
+				(node.left == null ? Integer.MIN_VALUE : node.left.value)),
+				(node.right == null ? Integer.MIN_VALUE : node.right.value)),
+				maxOfSubTree(node.left)), maxOfSubTree(node.right));
+	}
 }

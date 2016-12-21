@@ -2,10 +2,10 @@ package misc.bst;
 
 import java.util.LinkedList;
 
+import misc.bst.BinarySearchTree.Node;
+
 import org.junit.Assert;
 import org.junit.Test;
-
-import misc.bst.BinarySearchTree.Node;
 
 public class BinarySearchTreeCheckerTest {
 
@@ -107,6 +107,31 @@ public class BinarySearchTreeCheckerTest {
 		int h = checker.heightOfTree(root);
 		Assert.assertEquals(3, h);
 
+	}
+
+	@Test
+	public void testCheckBinarySearchTreeForPositiveScenario() {
+
+		Node root = new Node(4);
+		root.left = new Node(2);
+		root.right = new Node(5);
+		root.left.left = new Node(1);
+		root.left.right = new Node(3);
+
+		BinarySearchTree checker = new BinarySearchTree();
+		Assert.assertTrue(checker.checkBinarySearchTree(root));
+	}
+
+	@Test
+	public void testCheckBinarySearchTreeForNegativeScenario() {
+
+		Node root = new Node(10);
+		root.left = new Node(7);
+		root.right = new Node(39);
+		root.left.right = new Node(11);
+
+		BinarySearchTree checker = new BinarySearchTree();
+		Assert.assertFalse(checker.checkBinarySearchTree(root));
 	}
 
 }
