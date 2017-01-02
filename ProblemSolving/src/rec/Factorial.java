@@ -1,9 +1,14 @@
 package rec;
 
+import java.util.Scanner;
+
 public class Factorial {
 
 	public static void main(String[] args) {
-		System.out.println(factorial(4));
+		Scanner in = new Scanner(System.in);
+		int n = in.nextInt();
+		System.out.println(factorial(n));
+		in.close();
 
 	}
 
