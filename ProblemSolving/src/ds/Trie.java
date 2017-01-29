@@ -1,9 +1,9 @@
 package ds;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class Trie {
 
@@ -36,10 +36,11 @@ public class Trie {
 				return possibleMatchsList;
 			}
 
-			if (null != nextNode.text) {
-				possibleMatchsList.add(nextNode.text);
-			}
 			node = nextNode;
+		}
+
+		if (null != node.text) {
+			possibleMatchsList.add(node.text);
 		}
 
 		addtPartialMatchesToResult(node, possibleMatchsList);
@@ -63,11 +64,14 @@ public class Trie {
 
 		Trie trie = new Trie();
 
-		trie.add("ABC");
-		trie.add("ABD");
-		trie.add("XYZ");
+		trie.add("AZ");
 
-		System.out.println(trie.findMatch("X"));
+		trie.add("AP");
+		trie.add("AA");
+		trie.add("AD");
+		trie.add("AB");
+
+		System.out.println(trie.findMatch("A"));
 
 	}
 
@@ -78,7 +82,7 @@ public class Trie {
 		private String text;
 
 		public TrieNode() {
-			childrenMap = new HashMap<>();
+			childrenMap = new TreeMap<>();
 		}
 
 	}
